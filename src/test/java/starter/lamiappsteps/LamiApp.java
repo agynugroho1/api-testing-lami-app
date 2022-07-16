@@ -1,5 +1,8 @@
 package starter.lamiappsteps;
 
+import io.restassured.config.EncoderConfig;
+import io.restassured.config.RestAssuredConfig;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
@@ -11,13 +14,12 @@ import java.nio.file.Paths;
 public class LamiApp {
     public static String fileToken;
     public static Integer line;
-    File bodys;
 
     public RequestSpecification setBearerToken() {
         String data = "";
         try {
             data = Files.readAllLines(Paths.get(fileToken)).get(line);
-            return SerenityRest.given().header("Authorization", "Bearer "+data).body("");
+            return SerenityRest.given().header("Authorization", "Bearer "+data);
         } catch (IOException | NullPointerException e) {
             return SerenityRest.given();
         }
@@ -28,15 +30,15 @@ public class LamiApp {
         response.prettyPrint();
     }
 
-    public RequestSpecification bodyPutProfileUser(File body) {
-        bodys = body;
-        return setBearerToken().header("Content-type", "application/json")
-                .body(body);
-    }
-
-    public void putProfileUser() {
-        Response response = (Response) bodyPutProfileUser(bodys).put("/users");
-        response.prettyPrint();
+    public void putProfileUser(String keyImage, String valueImage, String keyName, String valueName, String keyEmail, String valueEmail, String keyPassword, String valuePassword){
+            String path = "src/test/resources/payload/image-profile.png";
+            File file = new File(String.format(path));
+            Response response = setBearerToken().multiPart(keyImage, file)
+                    .formParams(keyName, valueName)
+                    .formParams(keyEmail, valueEmail)
+                    .formParams(keyPassword, valuePassword)
+                    .put("/users");
+            response.prettyPrint();
     }
 
     public void deleteProfileUser() {

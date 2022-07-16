@@ -6,6 +6,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static net.serenitybdd.rest.SerenityRest.restAssuredThat;
@@ -14,6 +16,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class UsersLamiAppStepdefs {
 
     LamiApp lamiapp = new LamiApp();
+
 
     @Given("I set Bearer Token with {string} which is in line {int}")
     public void iSetBearerTokenWith(String token, int line) {
@@ -28,9 +31,6 @@ public class UsersLamiAppStepdefs {
                 lamiapp.getProfileUser();
                 break;
             case "post" :
-                break;
-            case "put" :
-                lamiapp.putProfileUser();
                 break;
             case "delete" :
                 lamiapp.deleteProfileUser();
@@ -55,10 +55,8 @@ public class UsersLamiAppStepdefs {
         restAssuredThat(validatableResponse -> validatableResponse.body(actualRole, equalTo(expectedRole)));
     }
 
-    @And("I set body with {string}")
-    public void iSetBodyWith(String body) {
-        String path = "src/test/resources/payload/"+body;
-        File file = new File(String.format(path));
-        lamiapp.bodyPutProfileUser(file);
+    @When("I send PUT request for profile user with data {string} is {string}, {string} is {string}, {string} is {string}, and {string} is {string}")
+    public void iSendPUTRequestForProfileUserWithDataIsIsIsAndIs(String keyImage, String valueImage, String keyName, String valueName, String keyEmail, String valueEmail, String keyPassword, String valuePassword) {
+        lamiapp.putProfileUser(keyImage, valueImage, keyName, valueName, keyEmail, valueEmail, keyPassword, valuePassword);
     }
 }

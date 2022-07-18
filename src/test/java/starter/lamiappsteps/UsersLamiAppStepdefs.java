@@ -50,8 +50,8 @@ public class UsersLamiAppStepdefs {
         restAssuredThat(validatableResponse -> validatableResponse.assertThat().body(matchesJsonSchemaInClasspath(path)));
     }
 
-    @And("Response body with jsonPath {string} should be equal {string}")
-    public void responseBodyWithJsonPathShouldBeEqual(String actualRole, String expectedRole) {
+    @And("Return body with jsonPath {string} should be equal {string}")
+    public void returnBodyWithJsonPathShouldBeEqual(String actualRole, String expectedRole) {
         restAssuredThat(validatableResponse -> validatableResponse.body(actualRole, equalTo(expectedRole)));
     }
 

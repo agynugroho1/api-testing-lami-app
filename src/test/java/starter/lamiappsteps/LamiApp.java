@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 
 public class LamiApp {
 
-    private static final String lamiApp_BASEURL = "http://3.88.194.152:80";
     public static String fileToken;
     public static Integer line;
 
@@ -75,7 +74,7 @@ public class LamiApp {
         SerenityRest.given()
                 .header("Content-type", "application/json")
                 .body(bodyDataregissucces)
-                .post(lamiApp_BASEURL + "/"+ reg);
+                .post("/" + reg);
     }
 
     public void postSameEmail(String reg) {
@@ -83,7 +82,7 @@ public class LamiApp {
         SerenityRest.given()
                 .header("Content-type", "application/json")
                 .body(bodySameEmail)
-                .post(lamiApp_BASEURL + "/" + reg);
+                .post("/" + reg);
     }
 
     public void postInvalidEmail(String reg) {
@@ -91,7 +90,7 @@ public class LamiApp {
         SerenityRest.given()
                 .header("Content-type", "application/json")
                 .body(bodyInvalidEmail)
-                .post(lamiApp_BASEURL + "/"+ reg);
+                .post("/" + reg);
     }
 
     public void postSpecialCharName(String reg) {
@@ -99,7 +98,7 @@ public class LamiApp {
         SerenityRest.given()
                 .header("Content-type", "application/json")
                 .body(bodySpecialChar)
-                .post(lamiApp_BASEURL + "/" + reg);
+                .post("/" + reg);
     }
 
     public void postNumericName(String reg) {
@@ -107,7 +106,7 @@ public class LamiApp {
         SerenityRest.given()
                 .header("Content-type", "application/json")
                 .body(bodyNumericName)
-                .post(lamiApp_BASEURL + "/" + reg);
+                .post("/" + reg);
     }
 
     public void postSuccessLogin(String login) {
@@ -115,7 +114,7 @@ public class LamiApp {
         SerenityRest.given()
                 .header("Content-type", "application/json")
                 .body(bodyDataLogin)
-                .post(lamiApp_BASEURL + "/"+ login);
+                .post("/" + login);
     }
 
     public void postInvalidEmailLogin(String login) {
@@ -123,7 +122,7 @@ public class LamiApp {
         SerenityRest.given()
                 .header("Content-type", "application/json")
                 .body(bodyInvalidEmailLogin)
-                .post(lamiApp_BASEURL + "/"+ login);
+                .post("/" + login);
     }
 
     public void postInvalidPassword(String login) {
@@ -131,7 +130,7 @@ public class LamiApp {
         SerenityRest.given()
                 .header("Content-type", "application/json")
                 .body(bodyInvalidPasswordLogin)
-                .post(lamiApp_BASEURL + "/"+ login);
+                .post("/" + login);
     }
 
     public void postInvalidData(String login) {
@@ -139,6 +138,6 @@ public class LamiApp {
         SerenityRest.given()
                 .header("Content-type", "application/json")
                 .body(bodyInvalidDataLogin)
-                .post(lamiApp_BASEURL + "/"+ login);
+                .post("/" + login);
     }
 }

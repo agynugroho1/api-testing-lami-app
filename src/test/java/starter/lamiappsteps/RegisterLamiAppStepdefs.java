@@ -33,12 +33,6 @@ public class RegisterLamiAppStepdefs {
         restAssuredThat(validatableResponse -> validatableResponse.statusCode(statusCode));
     }
 
-    @And("Return body should be with jsonSchema {string}")
-    public void returnBodyShouldBeWithJsonSchema(String File) {
-        String path = "schema/"+type+"/"+File;
-        restAssuredThat(validatableResponse -> validatableResponse.assertThat().body(matchesJsonSchemaInClasspath(path)));
-    }
-
     @When("I send POST request for {string} with validation {string}")
     public void iSendPOSTRequestForWithValidation(String ket, String validation) {
         if (Objects.equals(ket, "register")) {

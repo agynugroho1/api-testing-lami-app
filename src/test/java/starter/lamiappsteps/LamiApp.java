@@ -1,17 +1,16 @@
 package starter.lamiappsteps;
 
-import io.restassured.config.EncoderConfig;
-import io.restassured.config.RestAssuredConfig;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class LamiApp {
+
     public static String fileToken;
     public static Integer line;
 
@@ -67,5 +66,78 @@ public class LamiApp {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+
+    public void postSuccessRegister(String reg) {
+        File bodyDataregissucces = new File("src/test/resources/payload/register/REG-success.json");
+        SerenityRest.given()
+                .header("Content-type", "application/json")
+                .body(bodyDataregissucces)
+                .post("/" + reg);
+    }
+
+    public void postSameEmail(String reg) {
+        File bodySameEmail = new File("src/test/resources/payload/register/REG-sameEmail.json");
+        SerenityRest.given()
+                .header("Content-type", "application/json")
+                .body(bodySameEmail)
+                .post("/" + reg);
+    }
+
+    public void postInvalidEmail(String reg) {
+        File bodyInvalidEmail = new File("src/test/resources/payload/register/REG-invalidemail.json");
+        SerenityRest.given()
+                .header("Content-type", "application/json")
+                .body(bodyInvalidEmail)
+                .post("/" + reg);
+    }
+
+    public void postSpecialCharName(String reg) {
+        File bodySpecialChar = new File("src/test/resources/payload/register/REG-specialchar.json");
+        SerenityRest.given()
+                .header("Content-type", "application/json")
+                .body(bodySpecialChar)
+                .post("/" + reg);
+    }
+
+    public void postNumericName(String reg) {
+        File bodyNumericName = new File("src/test/resources/payload/register/REG.numericname.json");
+        SerenityRest.given()
+                .header("Content-type", "application/json")
+                .body(bodyNumericName)
+                .post("/" + reg);
+    }
+
+    public void postSuccessLogin(String login) {
+        File bodyDataLogin = new File("src/test/resources/payload/login/login-success.json");
+        SerenityRest.given()
+                .header("Content-type", "application/json")
+                .body(bodyDataLogin)
+                .post("/" + login);
+    }
+
+    public void postInvalidEmailLogin(String login) {
+        File bodyInvalidEmailLogin = new File("src/test/resources/payload/login/login-invalidemail.json");
+        SerenityRest.given()
+                .header("Content-type", "application/json")
+                .body(bodyInvalidEmailLogin)
+                .post("/" + login);
+    }
+
+    public void postInvalidPassword(String login) {
+        File bodyInvalidPasswordLogin = new File("src/test/resources/payload/login/login-invalidpassword.json");
+        SerenityRest.given()
+                .header("Content-type", "application/json")
+                .body(bodyInvalidPasswordLogin)
+                .post("/" + login);
+    }
+
+    public void postInvalidData(String login) {
+        File bodyInvalidDataLogin = new File("src/test/resources/payload/login/login-invaliddata.json");
+        SerenityRest.given()
+                .header("Content-type", "application/json")
+                .body(bodyInvalidDataLogin)
+                .post("/" + login);
     }
 }

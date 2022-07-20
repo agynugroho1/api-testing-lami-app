@@ -142,6 +142,46 @@ public class LamiApp {
                 .post("/" + login);
     }
 
+    public void postUpgradeAccount(String keyStoreName, String valueStoreName, String keyOwner, String valueOwner, String keyPhone, String valuePhone, String keyAddress, String valueAddress, String keyCity, String valueCity, String keyDocument, String valueDocument){
+        String path = "src/test/resources/payload/pdf-test.pdf";
+        File file = new File(String.format(path));
+        Response response = setBearerToken().multiPart(keyDocument, file)
+                .formParams(keyStoreName, valueStoreName)
+                .formParams(keyOwner, valueOwner)
+                .formParams(keyPhone, valuePhone)
+                .formParams(keyAddress, valueAddress)
+                .formParams(keyCity, valueCity)
+                .post("/users/stores");
+        response.prettyPrint();
+    }
+
+    public void getListCultures(String page, String valPage, String limit, String valLimit){
+        setBearerToken().get("/cultures?"+page+"="+valPage+"&"+limit+"="+valLimit).getBody();
+    }
+
+    public void getCultureDetails(String path){
+        setBearerToken().get("/cultures"+path).getBody();
+    }
+
+    public void postCultures(String keyName, String valName, String keyImage, String valImage, String keyCity, String valCity, String keyDetails, String valDetails){
+        try {
+            String path = "src/test/resources/payload/"+valImage;
+            File file = new File(String.format(path));
+            Response response = setBearerToken().multiPart(keyImage, file)
+                    .formParams(keyName, valName)
+                    .formParams(keyCity, valCity)
+                    .formParams(keyDetails, valDetails)
+                    .post("/cultures");
+            response.prettyPrint();
+        } catch (Exception e){
+            Response response = setBearerToken().formParams(keyName, valName)
+                    .formParams(keyCity, valCity)
+                    .formParams(keyDetails, valDetails)
+                    .post("/cultures");
+            response.prettyPrint();
+        }
+    }
+    
     public void GetListSubmission(String page, String valPage, String limit, String valLimit) {
         Response response = (Response) setBearerToken().get("/stores/submissions?"+page+"="+valPage+"&"+limit+"="+valLimit).getBody();
         response.prettyPrint();

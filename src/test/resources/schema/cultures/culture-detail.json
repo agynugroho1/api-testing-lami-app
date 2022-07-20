@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string"
+    },
+    "currenttime": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "culture_id": {
+          "type": "integer"
+        },
+        "Image": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "details": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "culture_id",
+        "Image",
+        "name",
+        "city",
+        "details"
+      ]
+    },
+    "message": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "code",
+    "currenttime",
+    "data",
+    "message"
+  ]
+}

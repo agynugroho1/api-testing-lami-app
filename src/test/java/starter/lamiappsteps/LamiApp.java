@@ -3,6 +3,7 @@ package starter.lamiappsteps;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
+import static net.serenitybdd.rest.SerenityRest.restAssuredThat;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -139,5 +140,28 @@ public class LamiApp {
                 .header("Content-type", "application/json")
                 .body(bodyInvalidDataLogin)
                 .post("/" + login);
+    }
+
+    public void GetListSubmission(String page, String valPage, String limit, String valLimit) {
+        Response response = (Response) setBearerToken().get("/stores/submissions?"+page+"="+valPage+"&"+limit+"="+valLimit).getBody();
+        response.prettyPrint();
+    }
+
+    public void PutUpdateUserStore(String valUser){
+        File bodyUpdateUserStore = new File("src/test/resources/payload/submission/put-update-store.json");
+        setBearerToken()
+                .header("Content-type", "application/json")
+                .body(bodyUpdateUserStore)
+                .put("/stores/submissions/"+valUser);
+    }
+
+    public void GetListEvent(String page, String valPage, String limit, String valLimit) {
+        Response response = (Response) setBearerToken().get("/events/submissions?" + page + "=" + valPage + "&" + limit + "=" + valLimit).getBody();
+        response.prettyPrint();
+    }
+
+    public void GetDetailEventID(String ID) {
+        Response response = (Response) setBearerToken().get("/events/submissions/1").getBody();
+        response.prettyPrint();
     }
 }

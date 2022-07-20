@@ -8,7 +8,7 @@ Feature: Register LamiApp
     And Response body with jsonPath "message" should be equal "success insert data"
 
   @Negative @FailedRegister @SameEmail
-    Scenario: 7user failed register with the same email
+    Scenario: user failed register with the same email
     When I send POST request for "register" with validation "same email"
     Then The response status code 400
     And Response body should be with jsonSchema "register/register-sameEmail.json"

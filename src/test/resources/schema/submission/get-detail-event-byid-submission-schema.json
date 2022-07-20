@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string"
+    },
+    "currenttime": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "eventID": {
+          "type": "integer"
+        },
+        "image": {
+          "type": "string"
+        },
+        "document": {
+          "type": "string"
+        },
+        "eventName": {
+          "type": "string"
+        },
+        "hostedBy": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "details": {
+          "type": "string"
+        },
+        "price": {
+          "type": "integer"
+        },
+        "Status": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "eventID",
+        "image",
+        "document",
+        "eventName",
+        "hostedBy",
+        "date",
+        "city",
+        "location",
+        "details",
+        "price",
+        "Status"
+      ]
+    },
+    "message": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "code",
+    "currenttime",
+    "data",
+    "message"
+  ]
+}

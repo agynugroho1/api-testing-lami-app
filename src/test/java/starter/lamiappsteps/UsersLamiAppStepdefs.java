@@ -11,6 +11,7 @@ import java.util.Map;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static net.serenitybdd.rest.SerenityRest.restAssuredThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
 public class UsersLamiAppStepdefs {
@@ -52,7 +53,7 @@ public class UsersLamiAppStepdefs {
 
     @And("Response body with jsonPath {string} should be equal {string}")
     public void responseBodyWithJsonPathShouldBeEqual(String actualRole, String expectedRole) {
-        restAssuredThat(validatableResponse -> validatableResponse.body(actualRole, equalTo(expectedRole)));
+        restAssuredThat(validatableResponse -> validatableResponse.body(actualRole, containsString(expectedRole)));
     }
 
     @When("I send PUT request for profile user with data {string} is {string}, {string} is {string}, {string} is {string}, and {string} is {string}")

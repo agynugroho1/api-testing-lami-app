@@ -6,10 +6,13 @@ public class SubmissionLamiAppStepdefs {
 
     LamiApp lamiapp = new LamiApp();
 
-    @When("I send GET request to view list submission with params {string} is {string} and {string} is {string}")
-    public void iSendGETRequestToViewListSubmissionWithParamsAnd(String page, String valPage, String limit, String valLimit) {
-        lamiapp.GetListSubmission(page, valPage, limit, valLimit);
-        lamiapp.GetListEvent(page, valPage, limit, valLimit);
+    @When("I send GET request to view list {string} with params {string} is {string} and {string} is {string}")
+    public void iSendGETRequestToViewListSubmissionWithParamsAnd(String type, String page, String valPage, String limit, String valLimit) {
+        if (type.equalsIgnoreCase("submission")) {
+            lamiapp.GetListSubmission(page, valPage, limit, valLimit);
+        } else {
+            lamiapp.GetListEvent(page, valPage, limit, valLimit);
+        }
     }
 
     @When("I send PUT request to update status store userID is {string}")

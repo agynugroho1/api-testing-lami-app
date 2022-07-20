@@ -3,20 +3,20 @@ Feature: Submission UMKM and Event
   @Positive @AllApplyUMKM @MustLoginAdmin
   Scenario: Admin GET all list submission
     Given I set Bearer Token with "bearer-admin.txt" which is in line 1
-    When I send GET request to view list submission with params "page" is "1" and "limit" is "12"
+    When I send GET request to view list "submission" with params "page" is "1" and "limit" is "12"
     Then Response code is 200
     And Response body should be with jsonSchema "submission/get-list-submission-schema.json"
 
   @Negative @InvalidTokenUMKM
   Scenario:  Admin GET all list submission with invalid token
     Given I set Bearer Token with "invalid-bearer.txt" which is in line 1
-    When I send GET request to view list submission with params "page" is "1" and "limit" is "12"
+    When I send GET request to view list "submission" with params "page" is "1" and "limit" is "12"
     Then Response code is 401
     And Response body with jsonPath "message" should be equal "invalid or expired jwt"
 
   @Negative @WithoutTokenUMKM
     Scenario: Admin GET all list submission without bearer token
-    When I send GET request to view list submission with params "page" is "1" and "limit" is "12"
+    When I send GET request to view list "submission" with params "page" is "1" and "limit" is "12"
     Then Response code is 400
     And Response body with jsonPath "message" should be equal "missing or malformed jwt"
 
@@ -53,20 +53,20 @@ Feature: Submission UMKM and Event
   @Positive @ListEvent @MustLoginAdmin
     Scenario: Admin GET all list event
     Given I set Bearer Token with "bearer-admin.txt" which is in line 1
-    When I send GET request to view list submission with params "page" is "1" and "limit" is "12"
+    When I send GET request to view list "event" with params "page" is "1" and "limit" is "12"
     Then Response code is 200
     And Response body should be with jsonSchema "submission/get-list-event-submission.json"
 
   @Negative @EventInvalidToken @MustLoginAdmin
   Scenario: Admin GET all list event with invalid token
     Given I set Bearer Token with "invalid-bearer.txt" which is in line 1
-    When I send GET request to view list submission with params "page" is "1" and "limit" is "12"
+    When I send GET request to view list "event" with params "page" is "1" and "limit" is "12"
     Then Response code is 401
     And Response body with jsonPath "message" should be equal "invalid or expired jwt"
 
   @Negative @EventWithoutToken
   Scenario: Admin GET all list submission without bearer token
-    When I send GET request to view list submission with params "page" is "1" and "limit" is "12"
+    When I send GET request to view list "event" with params "page" is "1" and "limit" is "12"
     Then Response code is 400
     And Response body with jsonPath "message" should be equal "missing or malformed jwt"
 

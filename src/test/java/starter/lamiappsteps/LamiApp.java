@@ -3,8 +3,6 @@ package starter.lamiappsteps;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
-import static net.serenitybdd.rest.SerenityRest.restAssuredThat;
-import org.json.JSONObject;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -12,16 +10,15 @@ import java.nio.file.Paths;
 
 public class LamiApp {
 
-    public static String fileToken;
-    public static Integer line;
+    public static Boolean isToken = false;
+    public static String token;
+    public static String wpath;
 
     public RequestSpecification setBearerToken() {
-        String data = "";
-        try {
-            data = Files.readAllLines(Paths.get(fileToken)).get(line);
-            return SerenityRest.given().header("Authorization", "Bearer "+data);
-        } catch (IOException | NullPointerException e) {
+        if (!isToken) {
             return SerenityRest.given();
+        } else {
+            return SerenityRest.given().header("Authorization", "Bearer " + token);
         }
     }
 
@@ -30,8 +27,15 @@ public class LamiApp {
         response.prettyPrint();
     }
 
-    public void putProfileUser(String keyImage, String valueImage, String keyName, String valueName, String keyEmail, String valueEmail, String keyPassword, String valuePassword){
-            String path = "src/test/resources/payload/image-profile.png";
+    public void putProfileUser(String keyImage, String valueImage, String keyName, String valueName, String keyEmail, String valueEmail, String keyPassword, String valuePassword) {
+        if (valueImage.isEmpty()) {
+            Response response = setBearerToken().multiPart(keyName, valueName)
+                    .formParams(keyEmail, valueEmail)
+                    .formParams(keyPassword, valuePassword)
+                    .put("/users");
+            response.prettyPrint();
+        } else {
+            String path = "src/test/resources/payload/" + valueImage;
             File file = new File(String.format(path));
             Response response = setBearerToken().multiPart(keyImage, file)
                     .formParams(keyName, valueName)
@@ -39,34 +43,12 @@ public class LamiApp {
                     .formParams(keyPassword, valuePassword)
                     .put("/users");
             response.prettyPrint();
+        }
+
     }
 
     public void deleteProfileUser() {
         Response response = (Response) setBearerToken().delete("/users");
-        if (response.statusCode() == 200) {
-            File inputFile = new File(String.format(fileToken));
-            File tempFile = new File(String.format(fileToken.replaceAll("bearer-for-delete-user", "tempFile")));
-
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-                BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-                String lineToRemove = Files.readAllLines(Paths.get(fileToken)).get(line);
-
-                String currentLine;
-
-                while ((currentLine = reader.readLine()) != null) {
-                    // trim newline when comparing with lineToRemove
-                    String trimmedLine = currentLine.trim();
-                    if (trimmedLine.equals(lineToRemove)) continue;
-                    writer.write(currentLine + System.getProperty("line.separator"));
-                }
-                writer.close();
-                reader.close();
-                boolean successful = tempFile.renameTo(inputFile);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 
 
@@ -142,7 +124,7 @@ public class LamiApp {
                 .post("/" + login);
     }
 
-    public void postUpgradeAccount(String keyStoreName, String valueStoreName, String keyOwner, String valueOwner, String keyPhone, String valuePhone, String keyAddress, String valueAddress, String keyCity, String valueCity, String keyDocument, String valueDocument){
+    public void postUpgradeAccount(String keyStoreName, String valueStoreName, String keyOwner, String valueOwner, String keyPhone, String valuePhone, String keyAddress, String valueAddress, String keyCity, String valueCity, String keyDocument, String valueDocument) {
         String path = "src/test/resources/payload/pdf-test.pdf";
         File file = new File(String.format(path));
         Response response = setBearerToken().multiPart(keyDocument, file)
@@ -155,17 +137,23 @@ public class LamiApp {
         response.prettyPrint();
     }
 
-    public void getListCultures(String page, String valPage, String limit, String valLimit){
-        setBearerToken().get("/cultures?"+page+"="+valPage+"&"+limit+"="+valLimit).getBody();
+    public void getListCultures(String page, String valPage, String limit, String valLimit) {
+        setBearerToken().get("/cultures?" + page + "=" + valPage + "&" + limit + "=" + valLimit).getBody();
     }
 
-    public void getCultureDetails(String path){
-        setBearerToken().get("/cultures"+path).getBody();
+    public void getCultureDetails(String path) {
+        setBearerToken().get("/cultures" + path).getBody();
     }
 
-    public void postCultures(String keyName, String valName, String keyImage, String valImage, String keyCity, String valCity, String keyDetails, String valDetails){
-        try {
-            String path = "src/test/resources/payload/"+valImage;
+    public void postCultures(String keyName, String valName, String keyImage, String valImage, String keyCity, String valCity, String keyDetails, String valDetails) {
+        if (valImage.isEmpty()) {
+            Response response = setBearerToken().multiPart(keyName, valName)
+                    .formParams(keyCity, valCity)
+                    .formParams(keyDetails, valDetails)
+                    .post("/cultures");
+            response.prettyPrint();
+        } else {
+            String path = "src/test/resources/payload/" + valImage;
             File file = new File(String.format(path));
             Response response = setBearerToken().multiPart(keyImage, file)
                     .formParams(keyName, valName)
@@ -173,26 +161,20 @@ public class LamiApp {
                     .formParams(keyDetails, valDetails)
                     .post("/cultures");
             response.prettyPrint();
-        } catch (Exception e){
-            Response response = setBearerToken().formParams(keyName, valName)
-                    .formParams(keyCity, valCity)
-                    .formParams(keyDetails, valDetails)
-                    .post("/cultures");
-            response.prettyPrint();
         }
     }
-    
+
     public void GetListSubmission(String page, String valPage, String limit, String valLimit) {
-        Response response = (Response) setBearerToken().get("/stores/submissions?"+page+"="+valPage+"&"+limit+"="+valLimit).getBody();
+        Response response = (Response) setBearerToken().get("/stores/submissions?" + page + "=" + valPage + "&" + limit + "=" + valLimit).getBody();
         response.prettyPrint();
     }
 
-    public void PutUpdateUserStore(String valUser){
+    public void PutUpdateUserStore(String valUser) {
         File bodyUpdateUserStore = new File("src/test/resources/payload/submission/put-update-store.json");
         setBearerToken()
                 .header("Content-type", "application/json")
                 .body(bodyUpdateUserStore)
-                .put("/stores/submissions/"+valUser);
+                .put("/stores/submissions/" + valUser);
     }
 
     public void GetListEvent(String page, String valPage, String limit, String valLimit) {
@@ -203,5 +185,54 @@ public class LamiApp {
     public void GetDetailEventID(String ID) {
         Response response = (Response) setBearerToken().get("/events/submissions/1").getBody();
         response.prettyPrint();
+    }
+
+    public void putCultures(String keyName, String valName, String keyImage, String valImage, String keyCity, String valCity, String keyDetails, String valDetails) {
+        if (valImage.isEmpty()) {
+            Response response = setBearerToken().multiPart(keyName, valName)
+                    .formParams(keyCity, valCity)
+                    .formParams(keyDetails, valDetails)
+                    .put("/cultures" + wpath);
+            response.prettyPrint();
+        } else {
+            String path = "src/test/resources/payload/" + valImage;
+            File file = new File(String.format(path));
+            Response response = setBearerToken().multiPart(keyImage, file)
+                    .formParams(keyName, valName)
+                    .formParams(keyCity, valCity)
+                    .formParams(keyDetails, valDetails)
+                    .put("/cultures" + wpath);
+            response.prettyPrint();
+        }
+    }
+
+    public void deleteCulture() {
+        Response response = setBearerToken().delete("/cultures" + wpath);
+        response.prettyPrint();
+    }
+
+    public void postReportCulture(String path) {
+        File file = new File("src/test/resources/payload/" + path);
+        Response response = setBearerToken().contentType("application/json")
+                .body(file)
+                .post("/cultures/reports" + wpath);
+        response.prettyPrint();
+    }
+
+    public void getReportCulture() {
+        Response response = setBearerToken().get("/cultures/reports" + wpath);
+        response.prettyPrint();
+    }
+
+    public void PutUpdateEventID(String updateEventID) {
+        File bodyUpdateEventID = new File("src/test/resources/payload/submission/put-update-eventid.json");
+        setBearerToken()
+                .header("Content-type", "application/json")
+                .body(bodyUpdateEventID)
+                .put("/events/submissions/" + updateEventID);
+    }
+
+    public void getEventsParticipations(){
+        setBearerToken().get("/events/participations");
     }
 }

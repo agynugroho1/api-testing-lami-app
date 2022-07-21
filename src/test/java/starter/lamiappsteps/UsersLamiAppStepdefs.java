@@ -5,24 +5,18 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static net.serenitybdd.rest.SerenityRest.restAssuredThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 
 public class UsersLamiAppStepdefs {
 
     LamiApp lamiapp = new LamiApp();
 
 
-    @Given("I set Bearer Token with {string} which is in line {int}")
-    public void iSetBearerTokenWith(String token, int line) {
-        LamiApp.fileToken = "src/test/resources/bearer/"+token;
-        LamiApp.line = line-1;
+    @Given("I set Bearer Token")
+    public void iSetBearerToken() {
+        LamiApp.isToken = true;
     }
 
     @When("I send {string} request for profile user")

@@ -24,4 +24,14 @@ public class SubmissionLamiAppStepdefs {
     public void iSendGETRequestToUpdateStatusStoreUserIDIs(String ID) {
         lamiapp.GetDetailEventID(ID);
     }
+
+    @When("I send GET request to update status event eventID is {string}")
+    public void iSendGETRequestToUpdateStatusEventEventIDIs(String eventID) {
+        lamiapp.GetDetailEventID(eventID);
+    }
+
+    @When("I send PUT request to update status event eventID is {string}")
+    public void iSendPUTRequestToUpdateStatusEventEventIDIs(String updateEventID) {
+        lamiapp.PutUpdateEventID(updateEventID);
+    }
 }

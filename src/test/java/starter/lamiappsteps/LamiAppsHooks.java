@@ -8,8 +8,6 @@ import io.restassured.response.Response;
 import net.serenitybdd.rest.SerenityRest;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class LamiAppsHooks {
     @Before
@@ -19,34 +17,13 @@ public class LamiAppsHooks {
 
     @Before("@MustLogin")
     public void beforeActivities(){
-        File file = new File("src/test/resources/payload/login/login-success.json");
+        String path = "src/test/resources/payload/login/login-success.json";
+        File file = new File(String.format(path));
         Response response = SerenityRest.given().header("Content-type", "application/json")
                 .body(file)
                 .post("/login");
         JsonPath jsonPath = response.jsonPath();
-        String token = jsonPath.get("data.token");
-        File inputFile = new File("src/test/resources/bearer/bearer-login.txt");
-        File tempFile = new File("src/test/resources/bearer/tempFile");
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-            String lineToRemove = Files.readAllLines(Paths.get("src/test/resources/bearer/bearer-login.txt")).get(0);
-
-            String currentLine;
-
-            while ((currentLine = reader.readLine()) != null) {
-                // trim newline when comparing with lineToRemove
-                String trimmedLine = currentLine.trim();
-                if (trimmedLine.equals(lineToRemove)) continue;
-                writer.write(currentLine + System.getProperty("line.separator"));
-            }
-            writer.write(token);
-            writer.close();
-            reader.close();
-            boolean successful = tempFile.renameTo(inputFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        LamiApp.token = jsonPath.get("data.token");
     }
 
     @Before("@MustLoginAdmin")
@@ -56,34 +33,26 @@ public class LamiAppsHooks {
                 .body(file)
                 .post("/login");
         JsonPath jsonPath = response.jsonPath();
-        String token = jsonPath.get("data.token");
-        File inputFile = new File("src/test/resources/bearer/bearer-admin.txt");
-        File tempFile = new File("src/test/resources/bearer/tempFile");
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-            String lineToRemove = Files.readAllLines(Paths.get("src/test/resources/bearer/bearer-admin.txt")).get(0);
+        LamiApp.token = jsonPath.get("data.token");
+    }
 
-            String currentLine;
+    @Before("@ForDelete")
+    public void accountForDelete(){
+        File file = new File("src/test/resources/payload/login/login-for-delete.json");
+        Response response = SerenityRest.given().header("Content-type", "application/json")
+                .body(file)
+                .post("/login");
+        JsonPath jsonPath = response.jsonPath();
+        LamiApp.token = jsonPath.get("data.token");
+    }
 
-            while ((currentLine = reader.readLine()) != null) {
-                // trim newline when comparing with lineToRemove
-                String trimmedLine = currentLine.trim();
-                if (trimmedLine.equals(lineToRemove)) continue;
-                writer.write(currentLine + System.getProperty("line.separator"));
-            }
-            writer.write(token);
-            writer.close();
-            reader.close();
-            boolean successful = tempFile.renameTo(inputFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    @Before("@InvalidToken")
+    public void invalidToken(){
+        LamiApp.token = "invalid16348923702730oyh9y9800dkljdjdzfs";
     }
 
     @After
     public void afterScenario(){
-        LamiApp.fileToken = null;
-        LamiApp.line = null;
+        LamiApp.isToken = false;
     }
 }

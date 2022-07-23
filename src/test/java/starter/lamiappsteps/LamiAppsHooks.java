@@ -6,6 +6,7 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import net.serenitybdd.rest.SerenityRest;
+import org.json.JSONObject;
 
 import java.io.*;
 
@@ -49,6 +50,18 @@ public class LamiAppsHooks {
     @Before("@InvalidToken")
     public void invalidToken(){
         LamiApp.token = "invalid16348923702730oyh9y9800dkljdjdzfs";
+    }
+
+    @Before("@MustLoginUMKM")
+    public void accountUMKM(){
+        JSONObject json = new JSONObject();
+        json.put("email", "rizqi2@mail.com");
+        json.put("password", "1234");
+        Response response = SerenityRest.given().header("Content-type", "application/json")
+                .body(json.toString())
+                .post("/login");
+        JsonPath jsonPath = response.jsonPath();
+        LamiApp.token = jsonPath.get("data.token");
     }
 
     @After

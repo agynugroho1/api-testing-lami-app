@@ -3,6 +3,7 @@ package starter.lamiappsteps;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -233,6 +234,88 @@ public class LamiApp {
     }
 
     public void getEventsParticipations(){
-        setBearerToken().get("/events/participations");
+        Response response = setBearerToken().get("/events/participations");
+        response.prettyPrint();
+    }
+
+    public void postEventsParticipations(){
+        String path = "src/test/resources/payload/participations/join-participations.json";
+        File json = new File(String.format(path));
+        Response response = setBearerToken().contentType("application/json")
+                .body(json)
+                .post("/events/participations");
+        response.prettyPrint();
+    }
+
+    public void posAddProduct(String keyImage, String valImage, String keyName, String valName, String keyDetails, String valDetails, String keyPrice, String valPrice, String keyStock, String valStock){
+        if (valImage.isEmpty()){
+            Response response = setBearerToken().multiPart(keyName, valName)
+                    .formParams(keyDetails, valDetails)
+                    .formParams(keyPrice, valPrice)
+                    .formParams(keyStock, valStock)
+                    .post("/products");
+            response.prettyPrint();
+        } else {
+            String path = "src/test/resources/payload/" + valImage;
+            File file = new File(String.format(path));
+            Response response = setBearerToken().multiPart(keyImage, file)
+                    .formParams(keyName, valName)
+                    .formParams(keyDetails, valDetails)
+                    .formParams(keyPrice, valPrice)
+                    .formParams(keyStock, valStock)
+                    .post("/products");
+            response.prettyPrint();
+        }
+    }
+
+    public void getListProduct(String query, String val, String query1, String val1){
+        setBearerToken().get("/products?"+query+"="+val+"&"+query1+"="+val1);
+    }
+
+    public void getDetailProduct(String path){
+        Response response = setBearerToken().get("/products"+path);
+        response.prettyPrint();
+    }
+
+    public void getMyProduct(){
+        Response response = setBearerToken().get("/users/products");
+    }
+
+    public void putUpdateProduct(String keyImage, String valImage, String keyName, String valName, String keyDetails, String valDetails, String keyPrice, String valPrice, String keyStock, String valStock){
+        if (valImage.isEmpty()){
+            Response response = setBearerToken().multiPart(keyName, valName)
+                    .formParams(keyDetails, valDetails)
+                    .formParams(keyPrice, valPrice)
+                    .formParams(keyStock, valStock)
+                    .put("/products"+wpath);
+            response.prettyPrint();
+        } else {
+            String path = "src/test/resources/payload/" + valImage;
+            File file = new File(String.format(path));
+            Response response = setBearerToken().multiPart(keyImage, file)
+                    .formParams(keyName, valName)
+                    .formParams(keyDetails, valDetails)
+                    .formParams(keyPrice, valPrice)
+                    .formParams(keyStock, valStock)
+                    .put("/products"+wpath);
+            response.prettyPrint();
+        }
+    }
+
+    public void deleteMyProduct(){
+        setBearerToken().delete("/products"+wpath);
+    }
+
+    public void postAddRating(){
+        JSONObject json = new JSONObject();
+        json.put("review", "ini_review");
+        json.put("rating", 4);
+        setBearerToken().contentType("application/json")
+                .body(json.toString())
+                .post("/products/ratings"+wpath);
+    }
+
+    public void getRating(){
+        setBearerToken().get("/products/ratings"+wpath);
     }
 }

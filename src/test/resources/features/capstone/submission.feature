@@ -7,7 +7,7 @@ Feature: Submission UMKM and Event
     Then Response code is 200
     And Response body should be with jsonSchema "submission/get-list-submission-schema.json"
 
-  @Negative @InvalidTokenUMKM
+  @Negative @InvalidToken
   Scenario:  Admin GET all list submission with invalid token
     Given I set Bearer Token
     When I send GET request to view list "submission" with params "page" is "1" and "limit" is "12"
@@ -42,7 +42,7 @@ Feature: Submission UMKM and Event
     Then The response status code 400
     And Response body with jsonPath "message" should be equal "missing or malformed jwt"
 
-  @Negative @InvalidInputToken
+  @Negative @InvalidToken
   Scenario: Update status store submission with invalid token
     Given I set Bearer Token
     When I send PUT request to update status store userID is "5"
@@ -57,7 +57,7 @@ Feature: Submission UMKM and Event
     Then Response code is 200
     And Response body should be with jsonSchema "submission/get-list-event-submission.json"
 
-  @Negative @EventInvalidToken @MustLoginAdmin
+  @Negative @InvalidToken
   Scenario: Admin GET all list event with invalid token
     Given I set Bearer Token
     When I send GET request to view list "event" with params "page" is "1" and "limit" is "12"
@@ -77,14 +77,15 @@ Feature: Submission UMKM and Event
     Then Response code is 200
     And Response body should be with jsonSchema "submission/get-detail-event-byid-submission-schema.json"
 
-  @Negative @EventInvalidUserID @MustLoginAdmin
+
+  @Negative @InvalidUserID @MustLoginAdmin
   Scenario: Admin GET detail event with invalid userID
     Given I set Bearer Token
-    When I send GET request to update status event eventID is "1*"
+    When I send GET request to update status event eventID is "Satu"
     Then The response status code 400
-    And Response body with jsonPath "message" should be equal "wrong param"
+    And Response body with jsonPath "message" should be equal "fail parameter eventID"
 
-  @Negative @EventUserInvalidToken
+  @Negative @InvalidToken
   Scenario: Update status store submission with invalid token
     Given I set Bearer Token
     When I send GET request to update status event eventID is "1"
@@ -106,7 +107,7 @@ Feature: Submission UMKM and Event
     And Response body should be with jsonSchema "submission/put-update-Event-schema.json"
     And Response body with jsonPath "message" should be equal "sucsess update event"
 
-  @Negative @EventUserInvalidToken
+  @Negative @InvalidToken
   Scenario: Admin PUT Update event with invalid token
     Given I set Bearer Token
     When I send PUT request to update status event eventID is "1"

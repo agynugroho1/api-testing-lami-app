@@ -26,7 +26,10 @@
         "hostedBy": {
           "type": "string"
         },
-        "date": {
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
           "type": "string"
         },
         "city": {
@@ -41,7 +44,7 @@
         "price": {
           "type": "integer"
         },
-        "Status": {
+        "status": {
           "type": "string"
         }
       },
@@ -51,12 +54,13 @@
         "document",
         "eventName",
         "hostedBy",
-        "date",
+        "startDate",
+        "endDate",
         "city",
         "location",
         "details",
         "price",
-        "Status"
+        "status"
       ]
     },
     "message": {

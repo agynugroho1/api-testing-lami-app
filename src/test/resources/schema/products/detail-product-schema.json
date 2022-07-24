@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string"
+    },
+    "currenttime": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "productID": {
+          "type": "integer"
+        },
+        "image": {
+          "type": "string"
+        },
+        "productName": {
+          "type": "string"
+        },
+        "storeName": {
+          "type": "string"
+        },
+        "price": {
+          "type": "integer"
+        },
+        "city": {
+          "type": "string"
+        },
+        "meanRating": {
+          "type": "integer"
+        },
+        "details": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "productID",
+        "image",
+        "productName",
+        "storeName",
+        "price",
+        "city",
+        "meanRating",
+        "details"
+      ]
+    },
+    "message": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "code",
+    "currenttime",
+    "data",
+    "message"
+  ]
+}

@@ -183,7 +183,7 @@ public class LamiApp {
     }
 
     public void GetDetailEventID(String ID) {
-        Response response = (Response) setBearerToken().get("/events/submissions/1").getBody();
+        Response response = (Response) setBearerToken().get("/events/submissions/"+ID).getBody();
         response.prettyPrint();
     }
 
@@ -232,7 +232,88 @@ public class LamiApp {
                 .put("/events/submissions/" + updateEventID);
     }
 
+    public void GetDetEventID(String eventID) {
+        Response response = (Response) setBearerToken().get("/events/"+eventID).getBody();
+        response.prettyPrint();
+
+    }
+
+    public void GetEventList(String page, String valPage, String limit, String valLimit, String name, String valName, String city, String valCity) {
+        Response response = (Response) setBearerToken().get("/events?" + limit + "=" + valLimit + "&" + page + "=" + valPage + "&" + name + "=" + valName+ "&" + city + "=" + valCity).getBody();
+        response.prettyPrint();
+    }
+
     public void getEventsParticipations(){
         setBearerToken().get("/events/participations");
+    }
+
+    public void PostCreateEvent(String image, String falImage, String doc, String falDoc, String name, String falName, String hostedBy, String falHostedBy, String phone, String falPhone, String startDate, String falStartDate, String endDate, String falEndDate, String city, String falCity, String location, String falLoc, String details, String falDetails, String price, String falPrice) {
+        String pathimg = "src/test/resources/payload/" + falImage;
+        File fileimage = new File(String.format(pathimg));
+
+        String pathdoc = "src/test/resources/payload/" + falDoc;
+        File filedoc = new File(String.format(pathdoc));
+
+        if (falImage.isEmpty()){
+            if (falDoc.isEmpty()){
+                Response response = setBearerToken().formParams(name, falName)
+                        .formParams(hostedBy, falHostedBy)
+                        .formParams(phone, falPhone)
+                        .formParams(startDate, falStartDate)
+                        .formParams(endDate, falEndDate)
+                        .formParams(city, falCity)
+                        .formParams(location, falLoc)
+                        .formParams(details, falDetails)
+                        .formParams(price, falPrice)
+                        .post("/events");
+                response.prettyPrint();
+            }else {
+                    Response response = setBearerToken().multiPart(doc,filedoc)
+                            .formParams(name, falName)
+                            .formParams(hostedBy, falHostedBy)
+                            .formParams(phone, falPhone)
+                            .formParams(startDate, falStartDate)
+                            .formParams(endDate, falEndDate)
+                            .formParams(city, falCity)
+                            .formParams(location, falLoc)
+                            .formParams(details, falDetails)
+                            .formParams(price, falPrice)
+                            .post("/events");
+                    response.prettyPrint();
+                    }
+        } else if (falDoc.isEmpty()){
+
+            Response response = setBearerToken().multiPart(image, fileimage)
+                    .formParams(name, falName)
+                    .formParams(hostedBy, falHostedBy)
+                    .formParams(phone, falPhone)
+                    .formParams(startDate, falStartDate)
+                    .formParams(endDate, falEndDate)
+                    .formParams(city, falCity)
+                    .formParams(location, falLoc)
+                    .formParams(details, falDetails)
+                    .formParams(price, falPrice)
+                    .post("/events");
+            response.prettyPrint();
+        } else {
+            Response response = setBearerToken().multiPart(image, fileimage)
+                    .multiPart(doc,filedoc)
+                    .formParams(name, falName)
+                    .formParams(hostedBy, falHostedBy)
+                    .formParams(phone, falPhone)
+                    .formParams(startDate, falStartDate)
+                    .formParams(endDate, falEndDate)
+                    .formParams(city, falCity)
+                    .formParams(location, falLoc)
+                    .formParams(details, falDetails)
+                    .formParams(price, falPrice)
+                    .post("/events");
+            response.prettyPrint();
+        }
+    }
+
+    public void deleteEventID() {
+        Response response = setBearerToken().delete("/events" + wpath);
+        response.prettyPrint();
     }
 }

@@ -26,7 +26,10 @@
             "city": {
               "type": "string"
             },
-            "date": {
+            "startDate": {
+              "type": "string"
+            },
+            "endDate": {
               "type": "string"
             },
             "status": {
@@ -38,38 +41,8 @@
             "nameEvent",
             "username",
             "city",
-            "date",
-            "status"
-          ]
-        },
-        {
-          "type": "object",
-          "properties": {
-            "eventID": {
-              "type": "integer"
-            },
-            "nameEvent": {
-              "type": "string"
-            },
-            "username": {
-              "type": "string"
-            },
-            "city": {
-              "type": "string"
-            },
-            "date": {
-              "type": "string"
-            },
-            "status": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "eventID",
-            "nameEvent",
-            "username",
-            "city",
-            "date",
+            "startDate",
+            "endDate",
             "status"
           ]
         }

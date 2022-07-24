@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string"
+    },
+    "currenttime": {
+      "type": "string"
+    },
+    "data": {
+      "type": "array",
+      "items": {}
+    },
+    "message": {
+      "type": "string"
+    },
+    "totalpage": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "code",
+    "currenttime",
+    "data",
+    "message",
+    "totalpage"
+  ]
+}

@@ -369,9 +369,10 @@ public class LamiApp {
                 .put("/carts"+wpath);
     }
 
-    public void deleteCart(){
-        setBearerToken().delete("/carts"+wpath);
-=======
+    public void deleteCart() {
+        setBearerToken().delete("/carts" + wpath);
+    }
+
     public void PostCreateEvent(String image, String falImage, String doc, String falDoc, String name, String falName, String hostedBy, String falHostedBy, String phone, String falPhone, String startDate, String falStartDate, String endDate, String falEndDate, String city, String falCity, String location, String falLoc, String details, String falDetails, String price, String falPrice) {
         String pathimg = "src/test/resources/payload/" + falImage;
         File fileimage = new File(String.format(pathimg));
